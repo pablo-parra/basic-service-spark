@@ -1,0 +1,38 @@
+---
+version: "3.8"
+services:
+
+  localstack:
+    build:
+      context: ./infrastructure/docker/localstack
+      dockerfile: LocalStackDockerfile
+    environment:
+      SERVICES: secretsmanager,sqs
+      DEFAULT_REGION: eu-west-1
+      DEBUG: "true"
+      LS_LOG: "trace"
+    ports:
+      - target: 4566
+        published: 4566
+      - target: 8080
+        published: 8081
+    networks:
+      menu-service-network:
+        aliases:
+          - localstack
+    tty: true
+
+  wiremock:
+    build:
+      context: ./infrastructure/docker/wiremock
+      dockerfile: WireMockDockerfile
+    ports:
+      - target: 8080
+        published: 8089
+    networks:
+      menu-service-network:
+        aliases:
+          - wiremock
+
+networks:
+  menu-service-network:

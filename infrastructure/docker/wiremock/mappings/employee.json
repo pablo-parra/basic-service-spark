@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/akamai-mock/ccu/v3/invalidate/cpcode/production"
+  },
+  "response": {
+    "status": 201,
+    "body": "{\"httpStatus\":201,\"detail\":\"Request accepted\",\"supportId\":\"111-aaa-bbb\",\"purgeId\":\"1111-2222-3333\",\"estimatedSeconds\": 5}",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

@@ -1,0 +1,3 @@
+ext { // Default environment if no other is set
+    contexts = 'local'
+}

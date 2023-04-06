@@ -1,0 +1,6 @@
+rootProject.name = 'menu-service'
+include 'parent-module:app'
+include 'parent-module:core'
+include 'parent-module:messaging'
+include 'parent-module:rest'
+include 'parent-module:secret'

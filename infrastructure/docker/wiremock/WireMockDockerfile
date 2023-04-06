@@ -1,0 +1,5 @@
+FROM wiremock/wiremock:2.35.0
+
+ADD mappings /home/wiremock/mappings
+
+EXPOSE 8080 8089
