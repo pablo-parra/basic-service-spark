@@ -1,78 +1,29 @@
+plugins {
+    id 'java-library'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
 dependencies {
+    implementation 'com.sparkjava:spark-core:2.9.4'
+    implementation 'com.google.code.gson:gson:2.10.1'
+    implementation 'org.apache.httpcomponents:fluent-hc:4.5.14'
 
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
 }
 
-description = 'Service for managing Menu data'
-
-apply from: "$rootDir/gradle/environment.gradle"
-
-allprojects {
-    apply plugin: 'java'
-    sourceCompatibility = JavaVersion.VERSION_17
-
-    repositories {
-        maven {
-            url "https://nexus.sys.mango/content/groups/public"
-            credentials {
-                username nexusUser
-                password nexusPassword
-            }
-        }
-    }
-
-    clean {
-        delete 'out'
-    }
-}
-
-subprojects {
-    apply plugin: 'java'
-    sourceCompatibility = JavaVersion.VERSION_17
-
-    group = 'com.mango'
-
-    dependencies {
-        implementation 'com.mango:mango-logging-generic-instrumentation:2.0.0'
-        testImplementation 'org.assertj:assertj-core:3.23.1'
-        testImplementation 'org.mockito:mockito-junit-jupiter:4.8.1'
-        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.1'
-        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.1'
-    }
-
-    test {
-        useJUnitPlatform()
-        include '**/*Should.class'
-
-        testLogging {
-            events "PASSED", "SKIPPED", "FAILED"
-        }
-    }
-
-    task integrationTest(type: Test) {
-        description = 'Runs integration tests.'
-        group = 'verification'
-
-        maxParallelForks = Runtime.runtime.availableProcessors().intdiv(2) ?: 1
-
-        useJUnitPlatform()
-        include '**/*IT.class'
-
-        testLogging {
-            events "PASSED", "SKIPPED", "FAILED"
-        }
-    }
-
-    task acceptanceTest(type: Test) {
-        description = 'Runs acceptance tests.'
-        group = 'verification'
-
-        useJUnitPlatform()
-        include '**/*AT.class'
-
-        maxParallelForks = Runtime.runtime.availableProcessors().intdiv(2) ?: 1
-
-        testLogging {
-            events "PASSED", "SKIPPED", "FAILED"
-        }
-    }
+test {
+    useJUnitPlatform()
 }

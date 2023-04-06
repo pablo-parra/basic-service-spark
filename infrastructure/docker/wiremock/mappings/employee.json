@@ -1,11 +1,11 @@
 {
   "request": {
-    "method": "POST",
-    "url": "/akamai-mock/ccu/v3/invalidate/cpcode/production"
+    "method": "GET",
+    "url": "/wiremock/employee/1"
   },
   "response": {
-    "status": 201,
-    "body": "{\"httpStatus\":201,\"detail\":\"Request accepted\",\"supportId\":\"111-aaa-bbb\",\"purgeId\":\"1111-2222-3333\",\"estimatedSeconds\": 5}",
+    "status": 200,
+    "body": "{\"id\":\"1\",\"firstName\":\"John\",\"middleName\":\"Dyer\",\"lastName\":\"Baizley\",\"age\":45,\"department\":\"art\"}",
     "headers": {
       "Content-Type": "application/json"
     }

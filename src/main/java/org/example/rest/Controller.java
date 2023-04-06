@@ -1,6 +1,7 @@
 package org.example.rest;
 
 import com.google.gson.Gson;
+import org.apache.http.HttpStatus;
 import org.apache.http.entity.ContentType;
 import org.example.core.exception.UnableToGetEmployee;
 import org.example.core.interactors.EmployeeService;
@@ -10,13 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Request;
 import spark.Response;
-
-import static org.apache.http.HttpStatus.SC_INTERNAL_SERVER_ERROR;
-import static org.apache.http.HttpStatus.SC_OK;
-import static spark.Spark.before;
-import static spark.Spark.exception;
-import static spark.Spark.get;
-import static spark.Spark.port;
+import spark.Spark;
 
 public class Controller {
 
@@ -31,35 +26,35 @@ public class Controller {
     }
 
     private void setUpServer() {
-        port(PORT);
+        Spark.port(PORT);
         endpoints();
         exceptions();
 
-        before((req, res) -> {
-            if (res.status() != SC_INTERNAL_SERVER_ERROR) {
+        Spark.before((req, res) -> {
+            if (res.status() != HttpStatus.SC_INTERNAL_SERVER_ERROR) {
                 res.type(ContentType.APPLICATION_JSON.getMimeType());
             }
         });
     }
 
     private void endpoints() {
-        get("/health", (req, res) -> STATUS_UP);
-        get("/employee/:id", this::employeeById, gson::toJson);
+        Spark.get("/health", (req, res) -> STATUS_UP);
+        Spark.get("/employee/:id", this::employeeById, gson::toJson);
     }
 
     private EmployeeDTO employeeById(Request req, Response res) {
         final var employee = new FindEmployeeById(employeeService).execute(req.params(ID));
-        res.status(SC_OK);
+        res.status(HttpStatus.SC_OK);
         return EmployeeDTO.fromDomain(employee);
     }
 
     private void exceptions() {
-        exception(UnableToGetEmployee.class, this::serverError);
+        Spark.exception(UnableToGetEmployee.class, this::serverError);
     }
 
     private void serverError(Exception e, Request request, Response response) {
         LOG.error(e.getClass().getSimpleName(), e);
-        response.status(SC_INTERNAL_SERVER_ERROR);
+        response.status(HttpStatus.SC_INTERNAL_SERVER_ERROR);
         response.body(gson.toJson(e.getMessage()));
     }
 

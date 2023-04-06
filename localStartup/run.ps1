@@ -4,7 +4,6 @@
 
 docker-compose build
 
-docker-compose -f docker-compose.local-dependencies.yml up -d localstack
 docker-compose -f docker-compose.local-dependencies.yml up -d wiremock
 
 echo "Waiting for containers to start..."

@@ -2,6 +2,7 @@ package org.example.client;
 
 import com.google.gson.Gson;
 import org.apache.http.HttpHeaders;
+import org.apache.http.client.fluent.Request;
 import org.apache.http.entity.ContentType;
 import org.example.client.dto.EmployeeDTO;
 import org.example.core.domain.Employee;
@@ -9,8 +10,6 @@ import org.example.core.exception.UnableToGetEmployee;
 import org.example.core.interactors.EmployeeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import static org.apache.http.client.fluent.Request.Get;
 
 public class ExternalService implements EmployeeService {
 
@@ -23,7 +22,7 @@ public class ExternalService implements EmployeeService {
     @Override
     public Employee getEmployee(String id) {
         try{
-            final var response = Get(urlEmployeeBy(id))
+            final var response = Request.Get(urlEmployeeBy(id))
                     .addHeader(HttpHeaders.ACCEPT, ContentType.APPLICATION_JSON.getMimeType())
                     .execute().returnContent().asString();
             return gson.fromJson(response, EmployeeDTO.class).toDomain();
